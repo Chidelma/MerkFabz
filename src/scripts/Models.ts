@@ -16,10 +16,10 @@ export interface _firestore {
     id:string,
 }
 
-export interface _key_val {
+export interface _search {
 
     key: string,
-    value: string
+    value: string | number | boolean
 }
 
 export interface _user {
@@ -45,6 +45,7 @@ export interface _role {
 }
 
 export interface _cart {
+    
     id: string,
     item_ids: string[]
 }
@@ -56,7 +57,8 @@ export interface _item {
     price: number,
     photo_urls: string[],
     stock: number,
-    size: string | number
+    size: string | number,
+    category: string
 }
 
 export interface _order {

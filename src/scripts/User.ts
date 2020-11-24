@@ -1,4 +1,4 @@
-import { _key_val, _user, _item, _cart, _firestore, _role, _order } from './Models';
+import { _search, _user, _item, _cart, _firestore, _role, _order } from './Models';
 import Item from './Item';
 import Role from './Role';
 import Order from './Order';
@@ -17,6 +17,7 @@ export default class User {
     private user_role:Role;
 
     constructor() {  
+
         this.id = '';
         this.email = '';
         this.display_name = '';
@@ -82,7 +83,7 @@ export default class User {
 
     async set_orders() {
 
-        let search:_key_val = {
+        let search:_search = {
             key: 'user_id',
             value: this.id
         }
@@ -91,6 +92,21 @@ export default class User {
 
         for(let i = 0; i < orders.length; i++) 
             this.orders.push(new Order(orders[i]));
+    }
+
+    add_to_cart(item:Item) {
+        this.shop_cart.push(item);
+    }
+
+    remove_frm_cart(item:Item) {
+
+        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_id() == item.get_id());
+
+        this.shop_cart.splice(idx, 1);
+    }
+
+    add_order(order:Order) {
+        this.orders.push(order);
     }
 
     get_id(): string {

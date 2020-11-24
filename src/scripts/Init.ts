@@ -1,7 +1,9 @@
-import { _firebase } from './Models';
+import { _firebase, _item } from './Models';
+import firebase from 'firebase/app';
 import Auth from './Auth';
 import Firestore from './Firestore';
 import User from './User';
+import Item from './Item';
 
 const config:_firebase = {
     apiKey: "AIzaSyDRJbMO8p_kOJY6AH6VPRdMQYe1xjwo3zg",
@@ -14,6 +16,17 @@ const config:_firebase = {
     measurementId: "G-NTVWNWY41C"
 };
 
-export const auth:Auth = new Auth(config);
-export const firestore:Firestore = new Firestore(config);
+const app:firebase.app.App = firebase.initializeApp(config);
+
+export const auth:Auth = new Auth(app);
+export const firestore:Firestore = new Firestore(app);
 export const user:User = new User();
+export const items:Item[] = [];
+
+(async () => {
+
+    let db_items:_item[] = await firestore.getAllDocs("ITEMS");
+
+    for(let i = 0; i < db_items.length; i++)
+        items.push(new Item(db_items[i]));
+});

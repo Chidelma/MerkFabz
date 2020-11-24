@@ -8,6 +8,7 @@ export default class Item {
     private photo_urls: string[];
     private stock: number;
     private size: string | number;
+    private category: string;
 
     constructor(item:_item) {
 
@@ -17,6 +18,7 @@ export default class Item {
         this.photo_urls = item.photo_urls;
         this.stock = item.stock;
         this.size = item.size;
+        this.category = item.category;
     }
 
     get_id(): string {
@@ -41,5 +43,17 @@ export default class Item {
 
     get_size(): number | string {
         return this.size;
+    }
+
+    get_category(): string {
+        return this.category;
+    }
+
+    increment_stock(count:number) {
+        this.stock += count;
+    }
+
+    decrement_stock(count:number) {
+        this.stock -= count;
     }
 }

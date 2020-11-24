@@ -63,4 +63,8 @@ export default class Order {
     get_items(): Item[] {
         return this.items;
     }
+
+    set_items(items:Item[]) {
+        this.items = items;
+    }
 }

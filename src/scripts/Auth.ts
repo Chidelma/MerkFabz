@@ -6,8 +6,8 @@ export default class Auth {
 
     private client:firebase.auth.Auth;
 
-    constructor(config:_firebase) {
-        this.client = firebase.initializeApp(config).auth();
+    constructor(app:firebase.app.App) {
+        this.client = app.auth();
     }
 
     async signUp(email:string, password:string): Promise<boolean> {
