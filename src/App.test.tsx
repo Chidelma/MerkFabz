@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import { auth, firestore, user } from './scripts/Init';
 import { _firestore, _user } from './scripts/Models';
 
 /*
@@ -26,7 +25,7 @@ test('user is unverified', () => {
   expect(user?.emailVerified).toBe(false);
 });
 
-*/
+
 test('signing in user', async () => {
 
   let exist:boolean = await auth.signIn("lycosidae23@gmail.com", "Password");
@@ -87,3 +86,5 @@ test('delete user', async () => {
 
   expect(deleted).toBe(true);
 });
+
+*/

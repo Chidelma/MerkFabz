@@ -6,8 +6,8 @@ export default class Firestore {
 
     private client:firebase.firestore.Firestore;
 
-    constructor(app:firebase.app.App) {
-        this.client = app.firestore();
+    constructor(store:firebase.firestore.Firestore) {
+        this.client = store;
     }
 
     async addData(coll:string, data:_user | _item | _cart | _role | _order): Promise<boolean> {

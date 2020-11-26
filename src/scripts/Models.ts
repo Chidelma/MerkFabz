@@ -1,3 +1,6 @@
+import Auth from './Auth';
+import Firestore from './Firestore';
+
 export interface _firebase {
 
     apiKey: string,
@@ -27,7 +30,6 @@ export interface _user {
     id: string,
     email: string,
     display_name: string,
-    email_verified: boolean,
     photo_url: string
 }
 
@@ -75,4 +77,9 @@ export interface _order {
     items: _item[],
     status: string,
     tracking_id: string
+}
+
+export interface _models {
+    auth: Auth,
+    store: Firestore
 }
