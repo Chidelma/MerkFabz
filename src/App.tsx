@@ -63,14 +63,7 @@ export default function App() {
     auth: auth,
     store: store
   }
-  // <SideBar />
-  //   <Header {...models} />
-  // <Cart {...models} />
-  //<Login {...models} />
-  // <Register {...models} />
-  // <Email {...models} />
-  //<Profile {...models} />
-
+ 
   return (
     <>
       <Slider slides={images} />
