@@ -227,7 +227,7 @@ export default class Auth {
 
     remove_frm_cart(item:Item) {
 
-        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_id() == item.get_id());
+        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_id() === item.get_id());
 
         this.shop_cart.splice(idx, 1);
     }

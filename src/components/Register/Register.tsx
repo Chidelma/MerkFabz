@@ -132,15 +132,6 @@ export default function Register(props:_models) {
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const closeRegister = () => {
-
-        let register = document.getElementById("register");
-
-        if(register) {
-            register.style.display = "none";
-        }
-    }
-
     let register:_register = {
 
         email: email,
@@ -158,8 +149,6 @@ export default function Register(props:_models) {
     return (
         <form id="register">
             <button id="signin" className="btn btn-light btn-sm" type="button" onClick={login}><i className="fa fa-arrow-left"></i> Sign In</button>
-
-            <button className="btn btn-danger btn-sm" onClick={closeRegister}><i className="fa fa-close"></i></button>
 
             <input className="register-detail form-control" placeholder="Name" value={name} onChange={(e:any) => setName(e.target.value)} required/>
 

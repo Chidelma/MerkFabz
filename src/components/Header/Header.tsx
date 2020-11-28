@@ -71,30 +71,49 @@ function toggleCart(view:boolean, setView:React.Dispatch<React.SetStateAction<bo
 function userInfo(props:_models) {
 
     let cart = document.getElementById("cart");
+    let register = document.getElementById("register");
 
     if(cart)
         cart.style.marginRight = "-20%";
+
+    if(register)
+        register.style.display = "none";
 
     if(!props.auth.isAuth()) {
 
         let login = document.getElementById("login");
 
-        if(login)
-            login.style.display = "block";
+        if(login) {
+            if(login.style.display === "block") {
+                login.style.display = "none";
+            } else {
+                login.style.display = "block";
+            }
+        }
 
     } else if(props.auth.isAuth() && !props.auth.isVerified()) {
 
         let verify = document.getElementById("email-verify");
 
-        if(verify)
-            verify.style.display = "block";
+        if(verify) {
+            if(verify.style.display === "block") {
+                verify.style.display = "none";
+            } else {
+                verify.style.display = "block";
+            }
+        }
 
     } else if(props.auth.isAuth() && props.auth.isVerified()) {
 
         let profile = document.getElementById("profile");
 
-        if(profile)
-            profile.style.display = "block";
+        if(profile) {
+            if(profile.style.display === "block") {
+                profile.style.display = "none";
+            } else {
+                profile.style.display = "block";
+            }
+        }
     }
 }
 
@@ -111,7 +130,7 @@ export default function Header(props:_models) {
 
             <button className="btn btn-light btn-lg menu-bar" onClick={() => toggleSide(viewMenu, setViewMenu)}><i className="fa fa-navicon"></i></button>
 
-            <img className="logo" src="./logo200.png" />
+            <img className="logo" src="./logo200.png" alt="logo" />
 
             <button className="btn btn-light btn-lg cart" onClick={() => toggleCart(viewCart, setViewCart)}><i className="fa fa-shopping-cart"></i></button>
 

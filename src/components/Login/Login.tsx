@@ -59,15 +59,6 @@ export default function Login(props:_models) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const closeLogin = () => {
-
-        let login = document.getElementById("login");
-
-        if(login) {
-            login.style.display = "none";
-        }
-    }
-
     let login:_login = {
 
         email: email,
@@ -81,8 +72,7 @@ export default function Login(props:_models) {
     return (
         <form id="login">
             <button id="create" className="btn btn-light btn-sm" type="button" onClick={register}>Create Account <i className="fa fa-arrow-right"></i></button>
-            <button className="btn btn-danger btn-sm" onClick={closeLogin}><i className="fa fa-close"></i></button>
-            
+
             <input className="login-detail form-control" type="email" placeholder="Email" value={email} onChange={(e:any) => setEmail(e.target.value)} required/>
             <input className="login-detail form-control" type="password" placeholder="Password" value={password} onChange={(e:any) => setPassword(e.target.value)} onKeyDown={(e:any) => e.key === "Enter" && user_login(e, props, login)} required/>
 
