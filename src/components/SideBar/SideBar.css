@@ -1,13 +1,14 @@
 #side-bar {
     height: 100%;
-    width: 300px;
-    margin-left: -300px;
+    width: 20%;
+    margin-left: -20%;
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 75px;
     left: 0;
     background-color: #eee;
     overflow-x: hidden;
     transition: margin-left 0.5s;
     padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

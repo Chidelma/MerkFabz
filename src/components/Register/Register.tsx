@@ -42,18 +42,14 @@ async function add_to_store(auth:Auth, store:Firestore): Promise<boolean> {
             photo_url: auth.get_photo()
         }
 
-        let user_add:boolean = await store.addData("USERS", store_user);
-
-        if(user_add) {
+        if(await store.addData("USERS", store_user)) {
 
             let store_cart:_cart = {
                 id: auth.get_id(),
                 item_ids: []
             }
 
-            let cart_add:boolean = await store.addData("CARTS", store_cart);
-
-            if(cart_add) {
+            if(await store.addData("CARTS", store_cart)) {
 
                 let store_role:_role = {
 
@@ -67,9 +63,7 @@ async function add_to_store(auth:Auth, store:Firestore): Promise<boolean> {
                     can_view_items: false,
                 }
 
-                let role_add:boolean = await store.addData("ROLES", store_role);
-
-                if(role_add)
+                if(await store.addData("ROLES", store_role))
                     all_added = true;
             }
         }
@@ -78,7 +72,7 @@ async function add_to_store(auth:Auth, store:Firestore): Promise<boolean> {
     return all_added;
 }
 
-async function user_register(e:any, props:_models, user:_register) {
+async function user_register(e:Event, props:_models, user:_register) {
 
     e.preventDefault();
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
 import SideBar from './components/SideBar/SideBar';
@@ -13,7 +13,6 @@ import firebase from 'firebase/app';
 import Auth from './scripts/Auth';
 import Firestore from './scripts/Firestore';
 import Item from './scripts/Item';
-import { useState } from 'react';
 
 const config:_firebase = {
   apiKey: "AIzaSyDRJbMO8p_kOJY6AH6VPRdMQYe1xjwo3zg",
@@ -48,7 +47,9 @@ export default function App() {
   const [store, setStore] = useState(new Firestore(app.firestore()));
   const [auth, setAuth] = useState(new Auth(app.auth(), store));
 
-  //getItems(setItems, store);
+  setTimeout(() => {
+    getItems(setItems, store);
+  }, 1000);
 
   let models:_models = {
     auth: auth,

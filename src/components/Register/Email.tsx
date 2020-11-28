@@ -29,7 +29,7 @@ export default function Email(props:_models) {
         <div id="email-verify">
             <p id="verify-msg">Please Check Your Email For Verification</p>
 
-    <button className="btn btn-light resend-btn" onClick={() => resend(props.auth, setLoading)} disabled={loading}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Resend"}</button>
+            <button className="btn btn-light resend-btn" onClick={() => resend(props.auth, setLoading)} disabled={loading}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Resend"}</button>
 
             <button className="btn btn-light login-btn" onClick={showLogin}>Login</button>
         </div>

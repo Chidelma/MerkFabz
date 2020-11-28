@@ -22,7 +22,7 @@ function register() {
     }
 }
 
-async function user_login(e:any, props:_models, user_login:_login) {
+async function user_login(e:Event, props:_models, user_login:_login) {
 
     e.preventDefault();
 

@@ -2,27 +2,23 @@ import React, { useState } from 'react';
 import { _models } from '../../scripts/Models';
 import './Header.css';
 
-function toggleSide(view:boolean, setView:any) {
+function toggleSide(view:boolean, setView:React.Dispatch<React.SetStateAction<boolean>>) {
 
     let sideBar = document.getElementById("side-bar");
     let head = document.getElementById("head-o");
 
     if(sideBar && head && !view) {
-        head.style.width = (window.innerWidth - 300) + "px";
-        head.style.marginLeft = "300px";
         sideBar.style.marginLeft = "0px";
         setView(true);
     } 
 
     if(sideBar && head && view) {
-        head.style.width = (window.innerWidth) + "px";
-        head.style.marginLeft = "0px";
-        sideBar.style.marginLeft = "-300px";
+        sideBar.style.marginLeft = "-20%";
         setView(false);
     }
 }
 
-function toggleSearch(view:boolean, setView:any) {
+function toggleSearch(view:boolean, setView:React.Dispatch<React.SetStateAction<boolean>>) {
 
     let searchInput = document.getElementById("search-input");
     let searchBtn = document.getElementById("search-btn");
@@ -40,10 +36,9 @@ function toggleSearch(view:boolean, setView:any) {
     }
 }
 
-function toggleCart(view:boolean, setView:any) {
+function toggleCart(view:boolean, setView:React.Dispatch<React.SetStateAction<boolean>>) {
 
     let cart = document.getElementById("cart");
-    let head = document.getElementById("head-o");
 
     let profile = document.getElementById("profile");
     let login = document.getElementById("login");
@@ -62,46 +57,44 @@ function toggleCart(view:boolean, setView:any) {
     if(email)
         email.style.display = "none";
 
-    if(cart && head && !view) {
-        head.style.width = (window.innerWidth - 300) + "px";
-        head.style.marginRight = "300px";
+    if(cart && !view) {
         cart.style.marginRight = "0px";
         setView(true);
     } 
 
-    if(cart && head && view) {
-        head.style.width = (window.innerWidth) + "px";
-        head.style.marginRight = "0px";
-        cart.style.marginRight = "-300px";
+    if(cart && view) {
+        cart.style.marginRight = "-20%";
         setView(false);
     }
 }
 
 function userInfo(props:_models) {
 
+    let cart = document.getElementById("cart");
+
+    if(cart)
+        cart.style.marginRight = "-20%";
+
     if(!props.auth.isAuth()) {
 
         let login = document.getElementById("login");
 
-        if(login) {
+        if(login)
             login.style.display = "block";
-        }
 
     } else if(props.auth.isAuth() && !props.auth.isVerified()) {
 
         let verify = document.getElementById("email-verify");
 
-        if(verify) {
+        if(verify)
             verify.style.display = "block";
-        }
 
     } else if(props.auth.isAuth() && props.auth.isVerified()) {
 
         let profile = document.getElementById("profile");
 
-        if(profile) {
+        if(profile)
             profile.style.display = "block";
-        }
     }
 }
 
@@ -116,7 +109,7 @@ export default function Header(props:_models) {
     return (
         <div id="head-o">
 
-            <button className="btn btn-light btn-lg menu-bar" onClick={() => toggleSide(viewMenu, setViewMenu)}><i className={viewMenu ? "fa fa-arrow-left" : "fa fa-navicon"}></i></button>
+            <button className="btn btn-light btn-lg menu-bar" onClick={() => toggleSide(viewMenu, setViewMenu)}><i className="fa fa-navicon"></i></button>
 
             <img className="logo" src="./logo200.png" />
 
