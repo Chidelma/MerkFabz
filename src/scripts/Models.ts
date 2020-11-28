@@ -1,5 +1,6 @@
 import Auth from './Auth';
 import Firestore from './Firestore';
+import Item from './Item';
 
 export interface _firebase {
 
@@ -81,5 +82,7 @@ export interface _order {
 
 export interface _models {
     auth: Auth,
-    store: Firestore
+    store: Firestore,
+    items:Item[],
+    filtered:Item[]
 }

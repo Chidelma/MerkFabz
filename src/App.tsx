@@ -43,7 +43,9 @@ async function getItems(setItems: any, store: Firestore) {
 export default function App() {
 
   let curr_items: Item[] = [];
+  let filtered: Item[] = []; 
 
+  const [filter,setFilter] = useState(filtered);
   const [items, setItems] = useState(curr_items);
   const [store, setStore] = useState(new Firestore(app.firestore()));
   const [auth, setAuth] = useState(new Auth(app.auth(), store));
@@ -54,13 +56,15 @@ export default function App() {
 
   let models: _models = {
     auth: auth,
-    store: store
+    store: store,
+    items: items,
+    filtered: filter
   }
  
   return (
     <>
       <Slider />
-      <SideBar />
+      <SideBar {...models}/>
       <Header {...models} />
       <Cart {...models} />
       <Login {...models} />
