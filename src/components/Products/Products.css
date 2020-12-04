@@ -1,0 +1,160 @@
+.search-bar {
+    margin-top:100px;
+    width:100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 0.4rem;
+}
+
+.custom-select {
+    width:20%;
+}
+
+table {
+    width: 100%;
+    height:100%;
+}
+
+.product-head, .product {
+    border-radius: 0.2rem;
+    padding: 5px;
+    width:100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.product-head {
+    height: 50px;
+}
+
+.product {
+    height: 100px;
+}
+
+.product-img {
+    height:70px;
+}
+
+td {
+    color:  #A38A00;
+}
+
+.attr {
+    width: 12.5%;
+    text-align: center;
+    border-right: 1px solid black;
+    float:left;
+    padding: 5px;
+    height: 100%;
+}
+
+.price {
+    color: red;
+}
+
+.modify {
+    text-align: center;
+    border-right: none;
+}
+
+.edit-btn {
+    margin-bottom: 10px;
+}
+
+.edit-btn, .del-btn {
+    width:100%;
+}
+
+#edit-product {
+    width:400px;
+    margin: 0 auto;
+    top:85px;
+    right:10px;
+    z-index: 3;
+    border-radius: 0.4rem;
+    position: fixed;
+    padding:10px;
+    background-color: #eee;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: 0.5;
+}
+
+#products {
+    width:100%;
+    height:100%;
+    padding: 10px;
+}
+
+.left-inp, .right-inp {
+    width:48%;
+}
+
+.left-inp {
+    float: left;
+}
+
+.right-inp {
+    float: right;
+}
+
+.old-price {
+    text-decoration: line-through;
+    font-size: smaller;
+}
+
+.new-price {
+    color:red;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.product-details {
+    width:100%;
+    height: 30%;
+}
+
+.new-btn, .add-prod {
+    color:  #A38A00;
+    float:right;
+    margin-right:10px;
+}
+
+.item-pics {
+    width:50px;
+    height:50px;
+    float: left;
+    margin-right: 10px;
+}
+
+.add-product {
+    border-radius: 0.4rem;
+    margin-bottom: 20px;
+}
+
+.add-product::placeholder {
+    color:  #A38A00;
+}
+
+.prod-det {
+    margin-top:10px;
+}
+
+.square {
+    height: 50px;
+    width: 50px;
+    border: dashed 2px black;
+    cursor: pointer;
+    text-align: center;
+}
+
+label {
+    width:100%;
+}
+
+.edit-image {
+    width:50px;
+    height:50px;
+    float:left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

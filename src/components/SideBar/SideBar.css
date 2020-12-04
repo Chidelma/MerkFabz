@@ -1,21 +1,29 @@
 #side-bar {
     height: 100%;
     width: 20%;
-    margin-left: -20%;
     position: fixed;
-    z-index: 1;
     top: 75px;
     left: 0;
     background-color: #eee;
     overflow-x: hidden;
-    transition: margin-left 0.5s;
+    transition: 0.5s;
+    z-index: 3;
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.sideBtn{
+#search-input::placeholder {
+    color:  #A38A00;
+}
+
+#search-input {
+    margin-bottom:50px;
+}
+
+.sideBtn {
+    color:  #A38A00;
     width:100%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     display:flex;
     flex-flow: column;
 }

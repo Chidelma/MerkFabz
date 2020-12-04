@@ -2,15 +2,16 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import Firestore from './Firestore';
 import Item from './Item';
-import { _cart, _firebase, _firestore, _item, _order, _role, _search } from './Models';
+import { _cart, _firestore, _item, _order, _role, _search, } from './Models';
 import Order from './Order';
 import Role from './Role';
+import Cart from './Cart';
 
 export default class Auth {
 
     private client:firebase.auth.Auth;
 
-    private shop_cart:Item[];
+    private shop_cart:Cart[];
     private orders:Order[];
     private user_role:Role;
 
@@ -221,13 +222,13 @@ export default class Auth {
         return signedOut;
     }
 
-    add_to_cart(item:Item) {
+    add_to_cart(item:Cart) {
         this.shop_cart.push(item);
     }
 
     remove_frm_cart(item:Item) {
 
-        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_id() === item.get_id());
+        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_item().get_id() === item.get_id());
 
         this.shop_cart.splice(idx, 1);
     }
@@ -256,7 +257,7 @@ export default class Auth {
         return this.user_role;
     }
 
-    get_cart(): Item[] {
+    get_cart(): Cart[] {
         return this.shop_cart;
     }
 
@@ -273,23 +274,8 @@ export default class Auth {
 
         let cart_info:_cart = await this.store.getData(info);
 
-        if(cart_info != null) {
-
-            let item_ids:string[] = cart_info.item_ids;
-
-            for(let i = 0; i < item_ids.length; i++) {
-
-                info = {
-                    id : item_ids[i],
-                    coll: "ITEMS"
-                }
-
-                let item:_item = await this.store.getData(info);
-
-                if(item != null)
-                    this.shop_cart.push(new Item(item));
-            }
-        }
+        for(let i = 0; i < cart_info.items.length; i++)
+            this.shop_cart.push(new Cart(cart_info.items[i]));
     }
 
     async set_role() {

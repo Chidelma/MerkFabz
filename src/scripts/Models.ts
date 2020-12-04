@@ -1,6 +1,8 @@
 import Auth from './Auth';
 import Firestore from './Firestore';
 import Item from './Item';
+import Order from './Order';
+import Storage from './Storage';
 
 export interface _firebase {
 
@@ -47,10 +49,14 @@ export interface _role {
     can_edit_role: boolean
 }
 
+export interface _cart_item {
+    item:_item,
+    quantity: number
+}
+
 export interface _cart {
-    
     id: string,
-    item_ids: string[]
+    items: _cart_item[]
 }
 
 export interface _item {
@@ -58,31 +64,38 @@ export interface _item {
     id: string,
     name: string,
     price: number,
+    sale_price: number | null,
     photo_urls: string[],
     stock: number,
-    size: string | number,
-    category: string
+    sizes: string[],
+    categories: string[]
+    tags: string[]
 }
 
 export interface _order {
 
     id: string,
-    user_id?: string,
+    user_id?: string | null,
     name: string,
     date: string,
+    email: string,
 
     address: string,
     city: string,
     province: string,
+    country: string,
+    postal: string,
 
-    items: _item[],
+    items: _cart_item[],
     status: string,
-    tracking_id: string
+    tracking_id: string | null
 }
 
 export interface _models {
     auth: Auth,
     store: Firestore,
+    storage: Storage,
+    orders: Order[]
     items:Item[],
     filtered:Item[]
 }

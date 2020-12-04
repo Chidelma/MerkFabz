@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { _firebase, _user, _firestore, _search, _item, _cart, _role, _order } from './Models';
+import { _user, _firestore, _search, _item, _cart, _role, _order } from './Models';
 
 export default class Firestore {
 
@@ -37,6 +37,23 @@ export default class Firestore {
             data = doc.data();
 
         return data;
+    }
+
+    async updateData(info:_firestore, search:_search): Promise<boolean> {
+
+        let updated:boolean = false;
+
+        try {
+
+            await this.client.collection(info.coll).doc(info.id).update({ [search.key] : search.value });
+
+            updated = true;
+
+        } catch(err:any) {
+            console.log(err.code, err.message);
+        }
+
+        return updated;
     }
 
     async getDocs(coll:string, search:_search): Promise<any[]> {

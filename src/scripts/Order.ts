@@ -1,27 +1,35 @@
 import { _order } from './Models';
-import Item from './Item';
+import Cart from './Cart';
 
 export default class Order {
 
     private id: string;
     private date: string;
+    private name: string;
+    private email:string;
 
     private address: string;
     private city: string;
     private province: string;
+    private country: string;
+    private postal:string;
 
     private status: string;
-    private tracking_id: string;
-    private items: Item[];
+    private tracking_id: string | null;
+    private items: Cart[];
 
     constructor(order:_order) {
 
         this.id = order.id;
         this.date = order.date;
+        this.name = order.name;
+        this.email = order.email;
 
         this.address = order.address;
         this.city = order.city;
         this.province = order.province;
+        this.country = order.country;
+        this.postal = order.postal;
 
         this.status = order.status;
         this.tracking_id = order.tracking_id;
@@ -29,11 +37,19 @@ export default class Order {
         this.items = [];
 
         for(let i = 0; i < order.items.length; i++) 
-            this.items.push(new Item(order.items[i]))
+            this.items.push(new Cart(order.items[i]))
     }
 
     get_id(): string {
         return this.id;
+    }
+
+    get_name(): string {
+        return this.name;
+    }
+
+    get_email(): string {
+        return this.email;
     }
 
     get_date(): string {
@@ -52,19 +68,35 @@ export default class Order {
         return this.province;
     }
 
+    get_country(): string {
+        return this.country
+    }
+
+    get_postal(): string {
+        return this.postal;
+    }
+    
     get_status(): string {
         return this.status;
     }
 
-    get_tracking_id(): string {
+    set_status(status:string) {
+        this.status = status;
+    }
+
+    get_tracking_id(): string | null {
         return this.tracking_id;
     }
 
-    get_items(): Item[] {
+    set_tracking_id(tracking_id:string) {
+        this.tracking_id = tracking_id;
+    }
+
+    get_items(): Cart[] {
         return this.items;
     }
 
-    set_items(items:Item[]) {
+    set_items(items:Cart[]) {
         this.items = items;
     }
 }

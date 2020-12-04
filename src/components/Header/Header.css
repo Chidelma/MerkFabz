@@ -5,7 +5,6 @@
     left: 0;
     position: fixed;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    transition: width .5s;
     background-color: white;
 }
 
@@ -31,24 +30,11 @@
     margin-right:10px;
 }
 
-.search {
-    float:right;
-    margin-right:10px;
-}
-
-#search-btn {
-    display: block;
-}
-
 #head-o .form-control {
     width:20%;
     float:right;
     margin-right:10px;
     margin-top:10px;
-}
-
-#search-input {
-    display: none;
 }
 
 #head-o .btn-light {

@@ -1,4 +1,4 @@
-#profile {
+#email-verify {
     width:300px;
     background-color: #eee;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -7,16 +7,19 @@
     position: fixed;
     top: 90px;
     right: 10px;
-    z-index: 3;
+    z-index: 1;
     padding: 10px;
 }
 
-.profile-btn {
-    width:100%;
-    margin-top:10px;
-    color:  #A38A00;
+#verify-msg {
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-#greet {
-    font-size: x-large;
+.resend-btn, .login-btn {
+    color:#A38A00;
+}
+
+.login-btn {
+    float: right;
 }

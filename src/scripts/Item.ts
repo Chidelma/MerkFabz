@@ -5,20 +5,24 @@ export default class Item {
     private id: string;
     private name: string;
     private price: number;
+    private sale_price: number | null;
     private photo_urls: string[];
     private stock: number;
-    private size: string | number;
-    private category: string;
+    private sizes: string[];
+    private categories: string[];
+    private tags: string[];
 
     constructor(item:_item) {
 
         this.id = item.id;
         this.name = item.name;
         this.price = item.price;
+        this.sale_price = item.sale_price;
         this.photo_urls = item.photo_urls;
         this.stock = item.stock;
-        this.size = item.size;
-        this.category = item.category;
+        this.sizes = item.sizes;
+        this.categories = item.categories;
+        this.tags = item.tags
     }
 
     get_id(): string {
@@ -33,6 +37,10 @@ export default class Item {
         return this.price;
     }
 
+    get_sale_price(): number | null {
+        return this.sale_price;
+    }
+
     get_photos(): string[] {
         return this.photo_urls;
     }
@@ -41,12 +49,16 @@ export default class Item {
         return this.stock;
     }
 
-    get_size(): number | string {
-        return this.size;
+    get_sizes(): string[] {
+        return this.sizes;
     }
 
-    get_category(): string {
-        return this.category;
+    get_categories(): string[] {
+        return this.categories;
+    }
+
+    get_tags(): string[] {
+        return this.tags;
     }
 
     increment_stock(count:number) {
