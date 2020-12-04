@@ -176,7 +176,7 @@ export default function Orders(props:_models) {
     }
 
     const search_order = (search_term:string) => {
-        
+
         setSearching(true);
 
         setResults(props.orders.filter((order) => order.get_id().includes(search_term) || order.get_name().includes(search_term)));
@@ -244,69 +244,67 @@ export default function Orders(props:_models) {
     }
 
     return (
-        <>
-            <div id="orders">
-                <div className="input-group mb-3 order-search-bar">
-                    <input type="text" className="form-control form-control-lg search-inp" onChange={(e) => search_order(e.target.value)} placeholder="Search Order ID, Name, Email" />
-                    <select className="custom-select custom-select-lg" onChange={(e) => filterStatus(e.target.value)}>
-                        <option selected>Status</option>
-                        <option value="Processing">Processing</option>
-                        <option value="Dispatched">Dispatched</option>
-                        <option value="In Transit">In Transit</option>
-                        <option value="Delivered">Delivered</option>
-                    </select>
-                    <select className="custom-select custom-select-lg" onChange={(e) => filterArea(e.target.value)}>
-                        <option selected>Province/State</option>
-                        {allAreas.map((area) => (
-                            <option value={area[1]}>{area[0]}</option>
-                        ))}
-                    </select>
-                    <select className="custom-select custom-select-lg" onChange={(e) => filterCountry(e.target.value)}>
-                        <option selected>Country</option>
-                        <option value="Canada">Canada</option>
-                        <option value="US">United States</option>
-                    </select>
-                    <div className="input-group-append">
-                        <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
-                    </div>
+        <div id="orders">
+            <div className="input-group mb-3 order-search-bar">
+                <input type="text" className="form-control form-control-lg search-inp" onChange={(e) => search_order(e.target.value)} placeholder="Search Order ID, Name, Email" />
+                <select className="custom-select custom-select-lg" onChange={(e) => filterStatus(e.target.value)}>
+                    <option selected>Status</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Dispatched">Dispatched</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+                <select className="custom-select custom-select-lg" onChange={(e) => filterArea(e.target.value)}>
+                    <option selected>Province/State</option>
+                    {allAreas.map((area) => (
+                        <option value={area[1]}>{area[0]}</option>
+                    ))}
+                </select>
+                <select className="custom-select custom-select-lg" onChange={(e) => filterCountry(e.target.value)}>
+                    <option selected>Country</option>
+                    <option value="Canada">Canada</option>
+                    <option value="US">United States</option>
+                </select>
+                <div className="input-group-append">
+                    <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
                 </div>
-                {searching ? <Order orders={results}/> : <Order orders={props.orders}/> }
-                {viewVerify && 
-                    <form id="verify-form">
-                        <h5>Verify Email</h5>
-                        <hr/>
-        
-                        <div className="input-group mb-3 prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Email:</span>
-                            </div>
-                            <input type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-                        </div>
-
-                        {verified && <h6 className="verify-msg">Verification Complete</h6>}
-        
-                        <button className="btn btn-danger" onClick={() => setViewVerify(false)}>Cancel</button>
-                        <button className="btn btn-light verify-btn" onClick={(e:any) => verifyEmail(e)} disabled={email.length === 0}>Verify</button>
-                    </form>
-                }
-                {viewStatus && 
-                    <form id="update-status">
-                        <h5>Update Order #{order.get_id()} Status</h5>
-                        <hr/>
-
-                        <div className="input-group mb-3 prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Tracking ID:</span>
-                            </div>
-                            <input type="text" className="form-control" value={trackingId} onChange={(e) => setTrackingId(e.target.value)} required/>
-                        </div>
-
-                        <button className="btn btn-danger" onClick={() => setViewStatus(false)}>Cancel</button>
-                        <button className="btn btn-light verify-btn" onClick={(e:any) => updateStatus(e)} disabled={trackingId.length === 0}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Update"}</button>
-                    </form>
-                }
-                {viewItem && <ViewItem/>}
             </div>
-        </>
+            {searching ? <Order orders={results}/> : <Order orders={props.orders}/> }
+            {viewVerify && 
+                <form id="verify-form">
+                    <h5>Verify Email</h5>
+                    <hr/>
+    
+                    <div className="input-group mb-3 prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Email:</span>
+                        </div>
+                        <input type="text" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                    </div>
+
+                    {verified && <h6 className="verify-msg">Verification Complete</h6>}
+    
+                    <button className="btn btn-danger" onClick={() => setViewVerify(false)}>Cancel</button>
+                    <button className="btn btn-light verify-btn" onClick={(e:any) => verifyEmail(e)} disabled={email.length === 0}>Verify</button>
+                </form>
+            }
+            {viewStatus && 
+                <form id="update-status">
+                    <h5>Update Order #{order.get_id()} Status</h5>
+                    <hr/>
+
+                    <div className="input-group mb-3 prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Tracking ID:</span>
+                        </div>
+                        <input type="text" className="form-control" value={trackingId} onChange={(e) => setTrackingId(e.target.value)} required/>
+                    </div>
+
+                    <button className="btn btn-danger" onClick={() => setViewStatus(false)}>Cancel</button>
+                    <button className="btn btn-light verify-btn" onClick={(e:any) => updateStatus(e)} disabled={trackingId.length === 0}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Update"}</button>
+                </form>
+            }
+            {viewItem && <ViewItem/>}
+        </div>
     )
 }

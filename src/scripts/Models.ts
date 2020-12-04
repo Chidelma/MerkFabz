@@ -3,6 +3,7 @@ import Firestore from './Firestore';
 import Item from './Item';
 import Order from './Order';
 import Storage from './Storage';
+import User from './User';
 
 export interface _firebase {
 
@@ -41,11 +42,13 @@ export interface _role {
     id: string,
 
     can_view_items: boolean,
+    can_view_orders: boolean,
 
     can_add_item: boolean,
     can_edit_item: boolean,
     can_delete_item: boolean,
-
+    
+    can_view_users: boolean,
     can_edit_role: boolean
 }
 
@@ -97,5 +100,6 @@ export interface _models {
     storage: Storage,
     orders: Order[]
     items:Item[],
-    filtered:Item[]
+    filtered:Item[],
+    users: User[]
 }

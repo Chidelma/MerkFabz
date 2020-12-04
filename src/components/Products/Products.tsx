@@ -309,110 +309,108 @@ export default function Product(props:_models) {
     }
 
     return (
-        <>
-            <div id="products">
-                <div className="input-group mb-3 search-bar">
-                    <div className="input-group-prepend">
-                        <button className="btn btn-light btn-lg new-btn" onClick={view_add}><i className="fa fa-plus"></i></button>
-                    </div>  
-                    <input type="text" className="form-control form-control-lg search-inp" onChange={(e) => search_products(e.target.value)} placeholder="Search Products" />
-                    <select onChange={(e) => filterCategory(e.target.value)} className="custom-select custom-select-lg" id="inputGroupSelect01">
-                        <option selected>Category</option>
-                        {
-                            catOptions.map((cat) => (
-                                <option value={cat}>{cat}</option>
-                            ))
-                        }
-                    </select>
-                    <select onChange={(e) => filterSize(e.target.value)} className="custom-select custom-select-lg" id="inputGroupSelect02">
-                        <option selected>Size</option>
-                        {
-                            sizeOptions.map((size) => (
-                                <option value={size}>{size}</option>
-                            ))
-                        }
-                    </select>
-                    <div className="input-group-append">
-                        <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
-                    </div>
+        <div id="products">
+            <div className="input-group mb-3 search-bar">
+                <div className="input-group-prepend">
+                    <button className="btn btn-light btn-lg new-btn" onClick={view_add}><i className="fa fa-plus"></i></button>
+                </div>  
+                <input type="text" className="form-control form-control-lg search-inp" onChange={(e) => search_products(e.target.value)} placeholder="Search Products" />
+                <select onChange={(e) => filterCategory(e.target.value)} className="custom-select custom-select-lg" id="inputGroupSelect01">
+                    <option selected>Category</option>
+                    {
+                        catOptions.map((cat) => (
+                            <option value={cat}>{cat}</option>
+                        ))
+                    }
+                </select>
+                <select onChange={(e) => filterSize(e.target.value)} className="custom-select custom-select-lg" id="inputGroupSelect02">
+                    <option selected>Size</option>
+                    {
+                        sizeOptions.map((size) => (
+                            <option value={size}>{size}</option>
+                        ))
+                    }
+                </select>
+                <div className="input-group-append">
+                    <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
                 </div>
-                {viewForm && 
-                    <form id="edit-product">
-                        <h5>Product Details</h5>
-                        <hr/>
-                        <label>Images:</label>
-                        {
-                            urls.map((url, idx) => (
-                                <img className="edit-image" src={url} key={idx} alt="product-image"/>
-                            ))
-                        }
-
-                        <label className="square">
-                            <i className="fa fa-photo fa-2x"></i>
-                            <input type="file" multiple hidden onChange={(e) => addImages(e.target.files)} />
-                        </label>
-        
-                        <div className="input-group mb-3 prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Name:</span>
-                            </div>
-                            <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} required/>
-                        </div>
-        
-                        <div className="input-group mb-3 left-inp prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Price:</span>
-                            </div>
-                            <input className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} type="number" step="any" min="1" required/>
-                        </div>
-        
-                        <div className="input-group mb-3 right-inp prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Sale Price:</span>
-                            </div>
-                            <input className="form-control" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} type="number" step="any" min="1" required/>
-                        </div>
-        
-                        <label>Sizes:</label>
-                        {
-                            sizeOptions.map((size, idx) => (
-                                <div className="form-check form-check-inline" key={Math.random()}>
-                                    <input className="form-check-input" key={Math.random()} type="checkbox" value={size} onChange={(e) => updateSize(e.target.checked, e.target.value)}/>
-                                    <label className="form-check-label">{size}</label>
-                                </div>
-                            ))
-                        }
-        
-                        <div className="input-group mb-3 prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Stock:</span>
-                            </div>
-                            <input className="form-control" value={stock} onChange={(e) => setStock(e.target.value)}  type="number" step="any" min="1" required/>
-                        </div>
-                        
-                        <label>Categories:</label>
-                        {
-                            catOptions.map((cat, idx) => (
-                                <div className="form-check form-check-inline" key={Math.random()}>
-                                    <input className="form-check-input" key={Math.random()} type="checkbox" value={cat} onChange={(e) => updateCat(e.target.checked, e.target.value)}/>
-                                    <label className="form-check-label">{cat}</label>
-                                </div>
-                            ))
-                        }
-        
-                        <div className="input-group mb-3 prod-det">
-                            <div className="input-group-prepend">
-                                <span className="input-group-text" id="inputGroup-sizing-default">Tags:</span>
-                            </div>
-                            <input className="form-control" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags (e.g. Black, Tees)" type="text" required/>
-                        </div>
-        
-                        <button className="btn btn-danger" onClick={cancel}>Cancel</button>
-                        <button className="btn btn-light add-prod" type="submit" onClick={(e:any) => add_edit_product(e)} disabled={loading}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Add/Edit Product"}</button>
-                    </form>
-                }
-                {searching ? <Products items={results}/> : <Products items={props.items}/> }
             </div>
-        </>
+            {viewForm && 
+                <form id="edit-product">
+                    <h5>Product Details</h5>
+                    <hr/>
+                    <label>Images:</label>
+                    {
+                        urls.map((url, idx) => (
+                            <img className="edit-image" src={url} key={idx} alt="product-image"/>
+                        ))
+                    }
+
+                    <label className="square">
+                        <i className="fa fa-photo fa-2x"></i>
+                        <input type="file" multiple hidden onChange={(e) => addImages(e.target.files)} />
+                    </label>
+    
+                    <div className="input-group mb-3 prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Name:</span>
+                        </div>
+                        <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} required/>
+                    </div>
+    
+                    <div className="input-group mb-3 left-inp prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Price:</span>
+                        </div>
+                        <input className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} type="number" step="any" min="1" required/>
+                    </div>
+    
+                    <div className="input-group mb-3 right-inp prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Sale Price:</span>
+                        </div>
+                        <input className="form-control" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} type="number" step="any" min="1" required/>
+                    </div>
+    
+                    <label>Sizes:</label>
+                    {
+                        sizeOptions.map((size, idx) => (
+                            <div className="form-check form-check-inline" key={Math.random()}>
+                                <input className="form-check-input" key={Math.random()} type="checkbox" value={size} onChange={(e) => updateSize(e.target.checked, e.target.value)}/>
+                                <label className="form-check-label">{size}</label>
+                            </div>
+                        ))
+                    }
+    
+                    <div className="input-group mb-3 prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Stock:</span>
+                        </div>
+                        <input className="form-control" value={stock} onChange={(e) => setStock(e.target.value)}  type="number" step="any" min="1" required/>
+                    </div>
+                    
+                    <label>Categories:</label>
+                    {
+                        catOptions.map((cat, idx) => (
+                            <div className="form-check form-check-inline" key={Math.random()}>
+                                <input className="form-check-input" key={Math.random()} type="checkbox" value={cat} onChange={(e) => updateCat(e.target.checked, e.target.value)}/>
+                                <label className="form-check-label">{cat}</label>
+                            </div>
+                        ))
+                    }
+    
+                    <div className="input-group mb-3 prod-det">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="inputGroup-sizing-default">Tags:</span>
+                        </div>
+                        <input className="form-control" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Tags (e.g. Black, Tees)" type="text" required/>
+                    </div>
+    
+                    <button className="btn btn-danger" onClick={cancel}>Cancel</button>
+                    <button className="btn btn-light add-prod" type="submit" onClick={(e:any) => add_edit_product(e)} disabled={loading}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Add/Edit Product"}</button>
+                </form>
+            }
+            {searching ? <Products items={results}/> : <Products items={props.items}/> }
+        </div>
     )
 }

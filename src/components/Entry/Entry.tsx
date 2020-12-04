@@ -98,6 +98,8 @@ export default function Entry(props:_models) {
                 
                             can_edit_role: false,
                             can_view_items: false,
+                            can_view_orders: false,
+                            can_view_users: false
                         }
     
                         if(await props.store.addData("ROLES", store_role))

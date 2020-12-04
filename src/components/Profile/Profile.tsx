@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { _models } from "../../scripts/Models";
 import './Profile.css';
+import { Link } from "react-router-dom";
 
 export default function Profile(props:_models) {
 
     const [name, setName] = useState(props.auth.get_display_name());
-    const [role, setRole] = useState(props.auth.get_role());
-
-    const [viewInventory, setViewInventory] = useState(false);
 
     const signOut = async () => {
 
@@ -26,29 +24,36 @@ export default function Profile(props:_models) {
     }
 
     let changed = setInterval(() => {
-        if(props.auth.get_display_name() != name) {
+        if(props.auth.get_display_name() !== name) {
             setName(props.auth.get_display_name());
-            setRole(props.auth.get_role());
             clearInterval(changed);
         }
     }, 1000);
 
     return (
-        <div id="profile">
-            <h6 id="greet">Hi {name}!</h6>
+        <>
+            <div id="profile">
+                <h6 id="greet">Hi {name}!</h6>
 
-            <button className="btn btn-light profile-btn">Profile</button>
-            <button className="btn btn-light profile-btn">My Orders</button>
+                <button className="btn btn-light profile-btn">Profile</button>
+                <button className="btn btn-light profile-btn">My Orders</button>
 
-            <hr/>
+                {props.auth.get_role().can_view_items() && 
+                    <Link to="/products"><button className="btn btn-light profile-btn">View Products</button></Link>
+                }
+                
+                {props.auth.get_role().can_view_orders() &&
+                    <Link to="/orders"><button className="btn btn-light profile-btn">View Orders</button></Link>
+                }
 
-            <button className="btn btn-light profile-btn">View Inventory</button>
-            <button className="btn btn-light profile-btn">View Orders</button>
-            <button className="btn btn-light profile-btn">View Users</button>
+                {props.auth.get_role().can_view_users() &&
+                    <Link to="/users"><button className="btn btn-light profile-btn">View Users</button></Link>
+                }
 
-            <hr/>
+                <hr/>
 
-            <button className="btn btn-light profile-btn" onClick={signOut}>Sign Out</button>
-        </div>
+                <button className="btn btn-light profile-btn" onClick={signOut}>Sign Out</button>
+            </div>
+        </>
     )
 }

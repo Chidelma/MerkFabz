@@ -5,6 +5,7 @@
     top: 75px;
     right: 0;
     background-color: #eee;
+    z-index: 3;
     overflow-x: hidden;
     transition: 0.5s;
     padding: 10px;

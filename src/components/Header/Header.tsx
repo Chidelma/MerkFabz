@@ -4,6 +4,7 @@ import './Header.css';
 import Entry from '../Entry/Entry';
 import Cart from '../Cart/Cart';
 import SideBar from '../SideBar/SideBar';
+import { Link } from 'react-router-dom';
 
 export default function Header(props:_models) {
 
@@ -40,7 +41,7 @@ export default function Header(props:_models) {
             <div id="head-o">
                 <button className="btn btn-light btn-lg menu-bar" onClick={toggleSide}><i className="fa fa-navicon"></i></button>
 
-                <img className="logo" src="./logo200.png" alt="logo" />
+                <Link to="/"><img className="logo" src="./logo200.png" alt="logo" /></Link>
 
                 <button className="btn btn-light btn-lg cart" onClick={toggleCart}><i className="fa fa-shopping-cart"></i> {props.auth.get_cart().length > 0 ? <span className="badge badge-dark">{props.auth.get_cart().length > 0}</span> : <span></span>}</button>
 
