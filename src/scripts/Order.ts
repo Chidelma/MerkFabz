@@ -18,6 +18,8 @@ export default class Order {
     private tracking_id: string | null;
     private items: Cart[];
 
+    private order_prim: _order;
+
     constructor(order:_order) {
 
         this.id = order.id;
@@ -37,7 +39,13 @@ export default class Order {
         this.items = [];
 
         for(let i = 0; i < order.items.length; i++) 
-            this.items.push(new Cart(order.items[i]))
+            this.items.push(new Cart(order.items[i]));
+
+        this.order_prim = order;
+    }
+
+    get_order_prim(): _order {
+        return this.order_prim;
     }
 
     get_id(): string {
@@ -82,6 +90,7 @@ export default class Order {
 
     set_status(status:string) {
         this.status = status;
+        this.order_prim.status = status;
     }
 
     get_tracking_id(): string | null {
@@ -90,6 +99,7 @@ export default class Order {
 
     set_tracking_id(tracking_id:string) {
         this.tracking_id = tracking_id;
+        this.order_prim.tracking_id = tracking_id;
     }
 
     get_items(): Cart[] {

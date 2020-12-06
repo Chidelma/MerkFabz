@@ -30,7 +30,7 @@ export default function Slider() {
             <div className="carousel-inner">
                 {
                     images.map((img:string, idx:number) => (
-                        <div className={idx === img_idx ? "carousel-item active" : "carousel-item"}>
+                        <div className={idx === img_idx ? "carousel-item active" : "carousel-item"} key={idx}>
                             <img className="d-block w-100 h-100" src={img} alt="slide" />
                         </div>
                     ))

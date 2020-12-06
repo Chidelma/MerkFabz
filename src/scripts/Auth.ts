@@ -1,41 +1,20 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import Firestore from './Firestore';
-import Item from './Item';
-import { _cart, _firestore, _item, _order, _role, _search, } from './Models';
-import Order from './Order';
-import Role from './Role';
-import Cart from './Cart';
+import { _cart, _cart_item, _firestore, _item, _order, _role, _search,_user } from './Models';
+import User from './User';
 
 export default class Auth {
 
     private client:firebase.auth.Auth;
 
-    private shop_cart:Cart[];
-    private orders:Order[];
-    private user_role:Role;
-
-    private store:Firestore;
-
-    private name:string;
-    private id:string;
-    private email:string;
-    private photo_url:string;
+    private user:User;
     private verified:boolean;
 
-    constructor(auth:firebase.auth.Auth, store:Firestore) {
+    constructor(auth:firebase.auth.Auth) {
 
         this.client = auth;
 
-        this.store = store;
-        this.shop_cart = [];
-        this.orders = [];
-        this.user_role = new Role();
-
-        this.name = "";
-        this.id = "";
-        this.email = "";
-        this.photo_url = "";
+        this.user = new User();
         this.verified = false;
     }
 
@@ -46,6 +25,8 @@ export default class Auth {
         try {
 
             await this.client.createUserWithEmailAndPassword(email, password);
+
+            await this.set_user(false);
 
             added = true;
 
@@ -77,6 +58,8 @@ export default class Auth {
         try {
 
             await this.client.signInWithEmailAndPassword(email, password);
+
+            await this.set_user(true);
 
             exist = true;
 
@@ -213,6 +196,8 @@ export default class Auth {
 
             await this.client.signOut();
 
+            this.unset_user();
+
             signedOut = true;
 
         } catch(err:any) {
@@ -222,113 +207,46 @@ export default class Auth {
         return signedOut;
     }
 
-    add_to_cart(item:Cart) {
-        this.shop_cart.push(item);
-    }
-
-    remove_frm_cart(item:Item) {
-
-        let idx:number = this.shop_cart.findIndex((curr_item) => curr_item.get_item().get_id() === item.get_id());
-
-        this.shop_cart.splice(idx, 1);
-    }
-
-    add_order(order:Order) {
-        this.orders.push(order);
-    }
-
-    get_id(): string {
-        return this.id;
-    }
-
-    get_email(): string {
-        return this.email;
-    }
-
-    get_display_name(): string {
-        return this.name;
-    }
-
-    get_photo(): string {
-        return this.photo_url;
-    }
-
-    get_role(): Role {
-        return this.user_role;
-    }
-
-    get_cart(): Cart[] {
-        return this.shop_cart;
-    }
-
-    get_orders(): Order[] {
-        return this.orders;
-    }
-
-    async set_shop_cart() {
-
-        let info:_firestore = {
-            coll: "CARTS",
-            id: this.id
-        }
-
-        let cart_info:_cart = await this.store.getData(info);
-
-        for(let i = 0; i < cart_info.items.length; i++)
-            this.shop_cart.push(new Cart(cart_info.items[i]));
-    }
-
-    async set_role() {
-
-        let info:_firestore = {
-            coll: "ROLES",
-            id: this.id
-        }
-
-        let user_role:_role = await this.store.getData(info);
-
-        this.user_role.set_role(user_role);
-    }
-
-    async set_orders() {
-
-        let search:_search = {
-            key: 'user_id',
-            value: this.id
-        }
-
-        let orders:_order[] = await this.store.getDocs("ORDERS", search);
-
-        for(let i = 0; i < orders.length; i++) 
-            this.orders.push(new Order(orders[i]));
-    }
-
-    set_user() {
+    async set_user(login:boolean) {
 
         if(this.client.currentUser) {
 
-            this.id = this.client.currentUser.uid
+            let currUser:any = {};
 
-            if(this.client.currentUser.displayName)
-                this.name = this.client.currentUser.displayName
+            currUser.id = this.client.currentUser.uid;
+
+            if(this.client.currentUser.displayName) 
+                currUser.display_name = this.client.currentUser.displayName;
 
             if(this.client.currentUser.email)
-                this.email = this.client.currentUser.email;
+                currUser.email = this.client.currentUser.email;
 
             if(this.client.currentUser.photoURL)
-                this.photo_url = this.client.currentUser.photoURL
+                currUser.photo_url = this.client.currentUser.photoURL;
 
             this.verified = this.client.currentUser.emailVerified;
+
+            let user:_user = currUser;
+
+            this.user = new User();
+
+            this.user.set_user(user);
+
+            if(login) {
+                await this.user.set_role();
+                await this.user.set_shop_cart();
+                await this.user.set_orders();
+            }
         }
     }
 
-    async set_info() {
+    get_user(): User {
+        return this.user;
+    }
 
-        if(this.client.currentUser) {
-
-            await this.set_role();
-            await this.set_shop_cart();
-            await this.set_orders();
+    unset_user() {
+        if(!this.client.currentUser) {
+            this.user = new User();
         }
     }
 }

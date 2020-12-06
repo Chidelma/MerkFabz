@@ -12,6 +12,8 @@ export default class Item {
     private categories: string[];
     private tags: string[];
 
+    private item_prim:_item;
+
     constructor(item:_item) {
 
         this.id = item.id;
@@ -22,7 +24,13 @@ export default class Item {
         this.stock = item.stock;
         this.sizes = item.sizes;
         this.categories = item.categories;
-        this.tags = item.tags
+        this.tags = item.tags;
+
+        this.item_prim = item;
+    }
+
+    get_item_prim(): _item {
+        return this.item_prim;
     }
 
     get_id(): string {
@@ -59,13 +67,5 @@ export default class Item {
 
     get_tags(): string[] {
         return this.tags;
-    }
-
-    increment_stock(count:number) {
-        this.stock += count;
-    }
-
-    decrement_stock(count:number) {
-        this.stock -= count;
     }
 }

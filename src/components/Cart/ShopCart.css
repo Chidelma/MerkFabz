@@ -1,0 +1,57 @@
+#cart {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    top: 75px;
+    right: 0;
+    background-color: #eee;
+    z-index: 3;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cart-item {
+    width:100%;
+    margin-bottom:50px;
+}
+
+.cart-price {
+    float:right;
+    color:red;
+}
+
+.cart-img {
+    width:50px;
+    height:50px;
+    float:left;
+}
+
+.counter {
+    width:100%;
+    margin-top:30px;
+}
+
+.plus, .minus, .count {
+    margin-right:10px;
+    float:right;
+}
+
+.price-calc {
+    text-align: right;
+    width:100%;
+}
+
+#empty {
+    text-align: center;
+}
+
+#calcs {
+    width:100%;
+    margin-top:50px;
+}
+
+.cart-name {
+    text-indent: 10px;
+}

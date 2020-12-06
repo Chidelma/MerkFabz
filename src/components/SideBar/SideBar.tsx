@@ -1,36 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './SideBar.css';
-import { _models } from '../../scripts/Models';
+import Item from '../../scripts/Item';
+import { products, filtered } from "../../scripts/Init";
+import { allCategories } from "../../scripts/Shares";
 
-export default function SideBar(props: _models) {
+export default function SideBar() {
 
-    let catOptions:string[] = ["New Arrivals", "Tops", "Bottoms", "Shoes", "Jewellery", "Face Masks", "Men", "Women", "Kids"];
+    let catOptions:string[] = allCategories;
 
-    const filterItems = (category:string) => {
+    const [allProducts] = useState(products.get());
+    const [searchTerm, setSearchTerm] = useState('');
 
-        props.filtered.length = 0;
+    const filterCategory = (category:string) => {
 
-        for(let i = 0; i < props.items.length; i++) {
+        let results:Item[] = [];
 
-            let categories:string[] = props.items[i].get_categories();
+        allProducts.forEach((item) => {
+            item.get_categories().forEach((cat) => {
+                if(cat === category && results.find((currItem) => currItem.get_id() === item.get_id()) === undefined)
+                    results.push(item);
+            });
+        });
 
-            for(let j = 0; j < categories.length; j++) {
+        filtered.set(results);
+        window.location.pathname = "/search";
+    }
 
-                if(categories[j] === category) {
-                    props.filtered.push(props.items[i]);
-                }
-            }
+    const filterProducts = () => {
+
+        if(searchTerm.length > 0) {
+            filtered.set(allProducts.filter((item) => item.get_name().includes(searchTerm)));
+            window.location.pathname = "/search";
         }
+    }
+
+    const shopAll = () => {
+        filtered.set(allProducts);
+        window.location.pathname = "/search";
     }
 
     return (
         <div id="side-bar">
-            <input id="search-input" className="form-control" placeholder="Search" />
+            <div className="input-group mb-3" id="search-input">
+                <input type="text" className="form-control" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <div className="input-group-append">
+                    <button className="btn btn-outline-secondary" onClick={filterProducts}><i className="fa fa-search"></i></button>
+                </div>
+            </div>
             
-            {catOptions.map((cat) => (
-                <button className="btn btn-light sideBtn" onClick={() => filterItems("Woman")}>{cat}</button>
+            <div className="sideBtn" onClick={shopAll}><h6>Shop All</h6></div>
+            {catOptions.map((cat, idx) => (
+                <div className="sideBtn" key={idx} onClick={() => filterCategory(cat)}><h6>{cat}</h6></div>
             ))}
-            <br></br>
         </div>
     )
 }

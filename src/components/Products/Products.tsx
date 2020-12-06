@@ -3,18 +3,20 @@ import React, { useState } from 'react';
 import { _cart, _firestore, _item, _models, _search } from "../../scripts/Models";
 import { v5 as uuidv5 } from 'uuid';
 import Item from "../../scripts/Item";
+import { products, store, storage, auth } from "../../scripts/Init";
+import { allCategories, allSizes } from "../../scripts/Shares";
 
 interface props { items:Item[] }
 
-export default function Product(props:_models) {
+export default function Product() {
 
     let catSelect:string[] = [];
     let sizeSelect:string[] = [];
     let fileNames:string[] = [];
     let imgUrls:string[] = [];
 
-    let catOptions:string[] = ["New Arrivals", "Tops", "Bottoms", "Shoes", "Jewellery", "Face Masks", "Men", "Women", "Kids"];
-    let sizeOptions:string[] = ["Fits All", "XX-Small", "X-Small", "Small", "Medium", "Large", "X-Large", "XX-Large"];
+    let catOptions:string[] = allCategories;
+    let sizeOptions:string[] = allSizes;
 
     let search_results:Item[] = [];
 
@@ -33,6 +35,11 @@ export default function Product(props:_models) {
     const [cats, setCats] = useState(catSelect);
     const [urls, setUrls] = useState(imgUrls);
     const [loading, setLoading] = useState(false);
+
+    const [userAuth, setUserAuth] = useState(auth.get());
+    const [allProducts, setAllProducts] = useState(products.get());
+    const [userStore, setUserStore] = useState(store.get());
+    const [userStorage, setUserStorage] = useState(storage.get());
 
     const updateCat = (checked:boolean, value:string) => {
 
@@ -66,12 +73,12 @@ export default function Product(props:_models) {
 
             for(let i = 0; i < files.length; i++) {
 
-                props.storage.uploadFile('product-images/' + files[i].name, files[i]);
+                userStorage.uploadFile('product-images/' + files[i].name, files[i]);
                 fileNames.push(files[i].name);
                 setImgNames(fileNames);
 
                 setTimeout(async () => {
-                    let url = await props.storage.getFileUrl('product-images/' + files[i].name);
+                    let url = await userStorage.getFileUrl('product-images/' + files[i].name);
                     urls.push(url);
                     setUrls(urls);
                 }, 1000);
@@ -96,7 +103,7 @@ export default function Product(props:_models) {
 
             for(let i = 0; i < fileNames.length; i++) {
 
-                let url = await props.storage.getFileUrl('product-images/' + fileNames[i]);
+                let url = await userStorage.getFileUrl('product-images/' + fileNames[i]);
 
                 console.log(url);
 
@@ -118,17 +125,20 @@ export default function Product(props:_models) {
                 photo_urls: urls
             }
 
-            let added:boolean = await props.store.addData("ITEMS", product);
+            let added:boolean = await userStore.addData("ITEMS", product);
 
             if(added) {
                 setLoading(false);
                 if(!editing)
-                    props.items.unshift(new Item(product));
+                    allProducts.unshift(new Item(product));
 
                 if(editing) {
-                    let idx:number = props.items.findIndex((item) => item.get_id() === product.id);
-                    props.items[idx] = new Item(product);
+                    let idx:number = allProducts.findIndex((item) => item.get_id() === product.id);
+                    allProducts[idx] = new Item(product);
                 }
+
+                products.set(allProducts);
+
                 setViewForm(false);
             }
         }
@@ -138,7 +148,7 @@ export default function Product(props:_models) {
 
         if(imgNames.length > 0) {
             for(let i = 0; i < imgNames.length; i++) {
-               await props.storage.deleteFile('product-images/'+ imgNames[i]);
+               await userStorage.deleteFile('product-images/'+ imgNames[i]);
             }
         }
 
@@ -187,10 +197,10 @@ export default function Product(props:_models) {
             let results:Item[] = [];
             setSearching(true);
 
-            for(let i = 0; i < props.items.length; i++) {
-                if(props.items[i].get_name().includes(search_term))
-                    results.push(props.items[i]);
-            }
+            allProducts.forEach((item) => {
+                if(item.get_name().includes(search_term))
+                    results.push(item);
+            });
 
             setResults(results);
         }
@@ -202,12 +212,13 @@ export default function Product(props:_models) {
 
         let results:Item[] = [];
 
-        for(let i = 0; i < props.items.length; i++) {
-            for(let j = 0; j < props.items[i].get_categories().length; j++) {
-                if(props.items[i].get_categories()[j] === searchOption)
-                    results.push(props.items[i]);
-            }
-        }
+        allProducts.forEach((item) => {
+            item.get_categories().forEach((cat) => {
+                if(cat === searchOption) {
+                    results.push(item);
+                }
+            });
+        });
 
         setResults(results)
     }
@@ -218,12 +229,13 @@ export default function Product(props:_models) {
 
         let results:Item[] = [];
 
-        for(let i = 0; i < props.items.length; i++) {
-            for(let j = 0; j < props.items[i].get_categories().length; j++) {
-                if(props.items[i].get_sizes()[j] === searchOption)
-                    results.push(props.items[i]);
-            }
-        }
+        allProducts.forEach((item) => {
+            item.get_sizes().forEach((size) => {
+                if(size === searchOption) {
+                    results.push(item);
+                }
+            });
+        });
 
         setResults(results)
     }
@@ -239,12 +251,16 @@ export default function Product(props:_models) {
                 id: item.get_id()
             }
 
-            if(await props.store.removeData(info)) {
+            if(await userStore.removeData(info)) {
 
-                props.items.splice(idx, 1);
+                allProducts.splice(idx, 1);
+                setAllProducts(allProducts);
 
-                if(props.auth.get_cart().find((prod) => prod.get_item().get_id() === item.get_id()) !== undefined)
-                    props.auth.remove_frm_cart(item);
+                if(userAuth.get_user().get_cart().find((prod) => prod.get_item().get_id() === item.get_id()) !== undefined)
+                    userAuth.get_user().rmv_cart_item(item);
+                
+                products.set(allProducts);
+                auth.set(userAuth);
             }
         }
     } 
@@ -410,7 +426,7 @@ export default function Product(props:_models) {
                     <button className="btn btn-light add-prod" type="submit" onClick={(e:any) => add_edit_product(e)} disabled={loading}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Add/Edit Product"}</button>
                 </form>
             }
-            {searching ? <Products items={results}/> : <Products items={props.items}/> }
+            {searching ? <Products items={results}/> : <Products items={allProducts}/> }
         </div>
     )
 }

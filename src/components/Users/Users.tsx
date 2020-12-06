@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import {_models, _role } from '../../scripts/Models';
 import User from '../../scripts/User';
+import { users, store } from "../../scripts/Init";
 import './Users.css';
 
 interface users { users : User[] }
 
-export default function Users(props:_models) {
+export default function Users() {
 
     let user_results:User[] = [];
 
+    const [allUsers] = useState(users.get());
+    const [userStore] = useState(store.get());
+
     const [searching, setSearching] = useState(false);
     const [results, setResults] = useState(user_results);
-    const [user, setUser] = useState(props.users[0]);
+    const [user, setUser] = useState(allUsers[0]);
     const [userIdx, setUserIdx] = useState(0);
     const [editing, setEditing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -76,34 +80,21 @@ export default function Users(props:_models) {
 
     const search_user = (search_term:string) => {
         setSearching(true);
-        setResults(props.users.filter((user) => user.get_name().includes(search_term) || user.get_email().includes(search_term)))
+        setResults(allUsers.filter((user) => user.get_name().includes(search_term) || user.get_email().includes(search_term)))
     }
 
     const updateUserPolicy = async (e:Event) => {
 
         e.preventDefault();
 
-        setLoading(true)
+        setLoading(true);
 
-        let role:_role = {
-
-            id: user.get_id(),
-
-            can_add_item: user.get_role().can_add_item(),
-            can_edit_item: user.get_role().can_edit_item(),
-            can_delete_item: user.get_role().can_delete_item(),
-            can_view_items: user.get_role().can_view_items(),
-            can_view_orders: user.get_role().can_view_orders(),
-            can_view_users: user.get_role().can_view_users(),
-
-            can_edit_role: user.get_role().can_edit_role()
-        }
-
-        let added:boolean = await props.store.addData("ROLES", role);
+        let added:boolean = await userStore.addData("ROLES", user.get_role().get_role_prime());
 
         if(added) {
-            props.users[userIdx].set_role(role);
+            await allUsers[userIdx].set_role();
             setEditing(false);
+            users.set(allUsers);
         }
 
         setLoading(false);
@@ -117,7 +108,7 @@ export default function Users(props:_models) {
                     <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
                 </div>
             </div>
-            {searching ? <User users={results}/> : <User users={props.users}/> }
+            {searching ? <User users={results}/> : <User users={allUsers}/> }
             {editing && 
                 <form id="policy-edit">
                     <h5>{user.get_name()}'s Policy</h5>

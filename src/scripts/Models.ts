@@ -26,7 +26,7 @@ export interface _firestore {
 export interface _search {
 
     key: string,
-    value: string | number | boolean
+    value: any
 }
 
 export interface _user {

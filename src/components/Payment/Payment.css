@@ -1,0 +1,35 @@
+#stripe {
+    margin-top: 100px;
+    margin-left: 100px;
+    width:400px;
+}
+
+.order-detail {
+    margin-bottom: 10px;
+}
+
+.order-detail::placeholder {
+    color:#A38A00;
+}
+
+.display-name {
+    width: 48%;
+}
+
+#first-name {
+    float: left;
+}
+
+#last-name {
+    float:right;
+}
+
+.pay-btn {
+    color:#A38A00;
+    margin-top:20px;
+    float:right;
+}
+
+#ship-title {
+    margin-top:40px;
+}

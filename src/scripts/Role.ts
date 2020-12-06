@@ -1,4 +1,4 @@
-import { _role } from './Models';
+import { _order, _role } from './Models';
 
 export default class Role {
 
@@ -13,6 +13,8 @@ export default class Role {
     private delete_item:boolean;
 
     private edit_role:boolean;
+
+    private role_prim:any;
 
     constructor() {
 
@@ -41,6 +43,12 @@ export default class Role {
         this.delete_item = role.can_delete_item;
 
         this.edit_role = role.can_edit_role;
+
+        this.role_prim = role;
+    }
+
+    get_role_prime(): _role {
+        return this.role_prim;
     }
 
     get_id(): string {
@@ -53,6 +61,7 @@ export default class Role {
 
     set_view_items(truth:boolean) {
         this.view_items = truth;
+        this.role_prim.can_view_items = truth;
     }
 
     can_view_orders(): boolean {
@@ -61,6 +70,7 @@ export default class Role {
 
     set_view_orders(truth:boolean) {
         this.view_orders = truth;
+        this.role_prim.can_view_orders = truth;
     }
 
     can_view_users(): boolean {
@@ -69,6 +79,7 @@ export default class Role {
 
     set_view_users(truth:boolean) {
         this.view_users = truth;
+        this.role_prim.can_view_users = truth;
     }
 
     can_add_item(): boolean {
@@ -77,6 +88,7 @@ export default class Role {
 
     set_add_item(truth:boolean) {
         this.add_item = truth;
+        this.role_prim.can_add_item = truth
     }
 
     can_edit_item(): boolean {
@@ -84,7 +96,8 @@ export default class Role {
     }
 
     set_edit_item(truth:boolean) {
-        this.edit_item = truth
+        this.edit_item = truth;
+        this.role_prim.can_edit_item = truth;
     }
 
     can_delete_item(): boolean {
@@ -93,6 +106,7 @@ export default class Role {
 
     set_delete_item(truth:boolean) {
         this.delete_item = truth;
+        this.role_prim.can_delete_item = truth;
     }
 
     can_edit_role(): boolean {
@@ -101,5 +115,6 @@ export default class Role {
 
     set_edit_role(truth:boolean) {
         this.edit_role = truth;
+        this.role_prim.can_edit_item = truth;
     }
 }

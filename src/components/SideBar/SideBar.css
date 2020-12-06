@@ -23,7 +23,9 @@
 .sideBtn {
     color:  #A38A00;
     width:100%;
+    border-bottom: 1px solid  #A38A00;
     margin-bottom: 20px;
     display:flex;
     flex-flow: column;
+    cursor: pointer;
 }

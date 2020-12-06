@@ -4,18 +4,22 @@ import './Register.css';
 import './Email.css';
 import { _cart, _models, _role, _user } from '../../scripts/Models';
 import Profile from '../Profile/Profile';
+import { auth, setAllUsers, store } from '../../scripts/Init';
 
-export default function Entry(props:_models) {
+export default function Entry() {
 
     const [viewLogin, setViewLogin] = useState(true);
     const [viewRegister, setViewRegister] = useState(false);
     const [viewVerify, setViewVerify] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [userAuth] = useState(auth.get());
+    const [userStore] = useState(store.get());
 
     const Login = () => {
 
         const [email, setEmail] = useState('');
         const [password, setPassword] = useState('');
-        const [loading, setLoading] = useState(false);
 
         const user_login = async (e:Event) => {
 
@@ -25,16 +29,16 @@ export default function Entry(props:_models) {
     
                 setLoading(true);
     
-                if(await props.auth.signIn(email, password)) {
-    
-                    props.auth.set_user();
-    
-                    await props.auth.set_info();
+                if(await userAuth.signIn(email, password)) {
+
+                    auth.set(userAuth);
+
+                    if(userAuth.get_user().get_role().can_view_users())
+                        await setAllUsers();
     
                     setEmail('');
                     setPassword('');
                     setLoading(false);
-                    setViewLogin(false);
                 }
             }
         }
@@ -64,45 +68,23 @@ export default function Entry(props:_models) {
         const [conPassword, setConPassword] = useState('');
         const [firstName, setFirstName] = useState('');
         const [lastName, setLastName] = useState('');
-        const [loading, setLoading] = useState(false);
 
         const add_to_store = async (): Promise<boolean> => {
 
             let all_added:boolean = false;
     
-            if(props.auth.isAuth()) {
+            if(userAuth.isAuth()) {
     
-                let store_user:_user = {
-                    id : props.auth.get_id(),
-                    email: props.auth.get_email(),
-                    display_name: props.auth.get_display_name(),
-                    photo_url: props.auth.get_photo()
-                }
-    
-                if(await props.store.addData("USERS", store_user)) {
+                if(await userStore.addData("USERS", userAuth.get_user().get_user_prim())) {
     
                     let store_cart:_cart = {
-                        id: props.auth.get_id(),
+                        id: userAuth.get_user().get_id(),
                         items: [] 
                     }
     
-                    if(await props.store.addData("CARTS", store_cart)) {
+                    if(await userStore.addData("CARTS", store_cart)) {
     
-                        let store_role:_role = {
-    
-                            id: props.auth.get_id(),
-                
-                            can_add_item: false,
-                            can_delete_item: false,
-                            can_edit_item: false,
-                
-                            can_edit_role: false,
-                            can_view_items: false,
-                            can_view_orders: false,
-                            can_view_users: false
-                        }
-    
-                        if(await props.store.addData("ROLES", store_role))
+                        if(await userStore.addData("ROLES", userAuth.get_user().get_role().get_role_prime()))
                             all_added = true;
                     }
                 }
@@ -121,25 +103,21 @@ export default function Entry(props:_models) {
     
                     setLoading(true);
     
-                    let signed:boolean = await props.auth.signUp(email, password);
+                    let signed:boolean = await userAuth.signUp(email, password);
     
                     if(signed) {
     
-                        let changed:boolean = await props.auth.updateProfile(firstName + ' ' + lastName, "https://api.hello-avatar.com/adorables/" + email);
+                        let changed:boolean = await userAuth.updateProfile(firstName + ' ' + lastName, "https://api.hello-avatar.com/adorables/" + email);
     
                         if(changed) {
-    
-                            props.auth.set_user();
     
                             let added:boolean = await add_to_store();
     
                             if(added) {
     
-                                let sent:boolean = await props.auth.sendEmailVerification();
+                                let sent:boolean = await userAuth.sendEmailVerification();
     
                                 if(sent) {
-    
-                                    await props.auth.set_info();
     
                                     setLoading(false);
                                     setFirstName('');
@@ -183,12 +161,10 @@ export default function Entry(props:_models) {
 
     const Verify = () => {
 
-        const [loading, setLoading] = useState(false);
-
         const resend = async () => {
 
             setLoading(true);
-            await props.auth.sendEmailVerification();
+            await userAuth.sendEmailVerification();
             setLoading(false);
         }
 
@@ -209,10 +185,8 @@ export default function Entry(props:_models) {
         )
     }
 
-    return props.auth.isAuth() ? (
-        <>
-            {<Profile {...props}/>}
-        </>
+    return auth.get().isAuth() && auth.get().isVerified() ? (
+        <Profile/>
     ) : (
         <>
             {viewLogin && <Login/>}

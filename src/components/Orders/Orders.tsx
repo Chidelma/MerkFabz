@@ -3,15 +3,19 @@ import React, { useState } from 'react';
 import { _firestore, _models, _search } from '../../scripts/Models';
 import Order from '../../scripts/Order';
 import Cart from '../../scripts/Cart';
-import { allAreas } from '../../scripts/States';
+import { allAreas } from '../../scripts/Shares';
+import { orders, store } from "../../scripts/Init";
 
 interface orders { orders: Order[]};
 
-export default function Orders(props:_models) {
+export default function Orders() {
+
+    const [allOrders] = useState(orders.get());
+    const [userStore] = useState(store.get());
 
     let order_results:Order[] = [];
     let cart_items:Cart[] = [];
-    let curr_order:Order = props.orders[0];
+    let curr_order:Order = orders.get()[0];
 
     const [searching, setSearching] = useState(false);
     const [viewVerify, setViewVerify] = useState(false);
@@ -179,28 +183,28 @@ export default function Orders(props:_models) {
 
         setSearching(true);
 
-        setResults(props.orders.filter((order) => order.get_id().includes(search_term) || order.get_name().includes(search_term)));
+        setResults(allOrders.filter((order) => order.get_id().includes(search_term) || order.get_name().includes(search_term)));
     }
 
     const filterStatus = (filterOption:string) => {
 
         setSearching(true);
 
-        setResults(props.orders.filter((order) => order.get_status() === filterOption));
+        setResults(allOrders.filter((order) => order.get_status() === filterOption));
     }
 
     const filterArea = (filterOption:string) => {
 
         setSearching(true);
 
-        setResults(props.orders.filter((order) => order.get_province() === filterOption));
+        setResults(allOrders.filter((order) => order.get_province() === filterOption));
     }
 
     const filterCountry = (filterOption:string) => {
 
         setSearching(true);
 
-        setResults(props.orders.filter((order) => order.get_country() === filterOption));
+        setResults(allOrders.filter((order) => order.get_country() === filterOption));
     }
 
     const updateStatus = async (e:Event) => {
@@ -221,7 +225,7 @@ export default function Orders(props:_models) {
                 value: trackingId
             }
     
-            let updated:boolean = await props.store.updateData(info, search);
+            let updated:boolean = await userStore.updateData(info, search);
     
             if(updated) {
     
@@ -230,13 +234,15 @@ export default function Orders(props:_models) {
                     value: "Dispatched"
                 }
     
-                updated = await props.store.updateData(info, search);
+                updated = await userStore.updateData(info, search);
 
                 if(updated) {
-                    props.orders[orderIdx].set_status("Dispatched");
-                    props.orders[orderIdx].set_tracking_id(trackingId);
+                    allOrders[orderIdx].set_status("Dispatched");
+                    allOrders[orderIdx].set_tracking_id(trackingId);
                     setViewStatus(false);
                 }
+
+                orders.set(allOrders);
             }
 
             setLoading(false);
@@ -269,7 +275,7 @@ export default function Orders(props:_models) {
                     <button className="btn btn-light" onClick={() => setSearching(false)}>Reset</button>
                 </div>
             </div>
-            {searching ? <Order orders={results}/> : <Order orders={props.orders}/> }
+            {searching ? <Order orders={results}/> : <Order orders={allOrders}/> }
             {viewVerify && 
                 <form id="verify-form">
                     <h5>Verify Email</h5>
